@@ -1,0 +1,3 @@
+[submodule "gambling-game/gambling/lib/forge-std"]
+	path = gambling-game/gambling/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
