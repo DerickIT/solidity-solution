@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -9,7 +9,11 @@ import {GamblingGame} from "../src/GamblingGame.sol";
 import "../src/access/proxy/Proxy.sol";
 
 contract TestERC20 is ERC20 {
-    constructor(string memory name, string memory symbol, uint256 initialSupply) ERC20(name, symbol) {
+    constructor(
+        string memory name,
+        string memory symbol,
+        uint256 initialSupply
+    ) ERC20(name, symbol) {
         _mint(msg.sender, initialSupply);
     }
 }
@@ -39,20 +43,43 @@ contract GamblingGameTest is Test {
         console.log("betteToken===", address(gamblingGame.betteToken()));
     }
 
-
     function testCreateBettor() public {
         uint256 amount = 100 * 1e18;
         testToken.approve(address(gamblingGame), amount);
         gamblingGame.createBettor(amount, 1);
         uint256 pGameBlock = gamblingGame.gameBlock();
+        console.log("pGameBlock===", pGameBlock);
 
-        (address account, uint256 value, uint256 hgmId, uint8 betType, bool hasReward, bool isReward, uint256 reWardVale) = gamblingGame.GuessBettorMap(1, msg.sender);
-        console.log("gamblingGame.GuessBettorMap[1][msg.sender].value===", value);
+        // Access GuessBettorMap
+        (
+            ,
+            // address account
+            uint256 value, // uint256 hgmId // uint8 betType // bool hasReward // bool isReward
+            ,
+            ,
+            ,
+            ,
 
-        (address accountOne, uint256 valueOne, uint256 hgmIdOne, uint8 betTypeOne, bool hasRewardOne, bool isRewardOne, uint256 reWardValeOne) =gamblingGame.guessBettorList(0);
-        console.log("guessBettorList(0).account===", address(accountOne));
+        ) = // uint256 reWardVale
+            gamblingGame.GuessBettorMap(1, msg.sender);
+        console.log(
+            "gamblingGame.GuessBettorMap[1][msg.sender].value===",
+            value
+        );
+
+        // Access guessBettorList
+        (
+            address accountOne,
+            uint256 valueOne, // uint256 hgmIdOne
+            ,
+            uint8 betTypeOne, // bool hasRewardOne // bool isRewardOne
+            ,
+            ,
+
+        ) = // uint256 reWardValeOne
+            gamblingGame.guessBettorList(0);
+        console.log("guessBettorList(0).account===", accountOne);
         console.log("guessBettorList(0).betTypeOne===", betTypeOne);
         console.log("guessBettorList(0).valueOne===", valueOne);
     }
-
 }
